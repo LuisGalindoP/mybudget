@@ -29,7 +29,7 @@ module.exports = {
       });
   },
   //FIND ONE PET
-  findOnePet: (req, res) => {
+  findOneExpense: (req, res) => {
     Expense.findOne({ _id: req.params.id })
       .then((onExpense) => {
         console.log(oneExpense);
