@@ -2,10 +2,8 @@ const mongoose = require("mongoose");
 
 const ExpenseSchema = new mongoose.Schema(
   {
-    name: {
+    description: {
       type: String,
-      required: [true, "Add expense name"],
-      minlength: [3, "Name must be at least 3 characters"],
     },
     expenseType: {
       type: String,

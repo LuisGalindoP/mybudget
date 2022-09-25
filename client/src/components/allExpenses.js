@@ -3,10 +3,12 @@ import styled from "styled-components";
 import axios from "axios";
 import { Link, navigate } from "@reach/router";
 
+import Categories from "../data/categories";
+
 const AllExpenses = (props) => {
   const { allExpenses, setAllExpenses } = props;
   const [deletedExpense, setDeletedExpense] = useState(0);
-  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
   const [expenseType, setExpenseType] = useState("");
   const [amount, setAmount] = useState(0);
   const [errors, setErrors] = useState({});
@@ -15,7 +17,7 @@ const AllExpenses = (props) => {
     event.preventDefault();
     axios
       .post("http://localhost:8000/expense/new", {
-        name,
+        description,
         expenseType,
         amount,
       })
@@ -55,21 +57,24 @@ const AllExpenses = (props) => {
     <div>
       <Title>This is the all expenses component</Title>
       <form onSubmit={formhandler}>
-        <label>Expense name</label>
-        <input
-          onChange={(event) => {
-            setName(event.target.value);
-          }}
-          type="text"
-        />
         {/* FORM EXPENSE TYPE */}
-        <label>Type</label>
-        <input
+        <select
+          className={"shadow border rounded py-1 w-1/2 text-gray-600"}
           onChange={(event) => {
             setExpenseType(event.target.value);
           }}
-          type="text"
-        />
+        >
+          <option value="none" defaultValue hidden>
+            Select a type
+          </option>
+          {Categories.map((cat, index) => {
+            return (
+              <option value={cat} key={index}>
+                {cat}
+              </option>
+            );
+          })}
+        </select>
         <label>amount</label>
         <input
           onChange={(event) => {
@@ -77,26 +82,33 @@ const AllExpenses = (props) => {
           }}
           type="number"
         />
+        <label>Description</label>
+        <input
+          onChange={(event) => {
+            setDescription(event.target.value);
+          }}
+          type="text"
+        />
         <button type="submit">Add Expense</button>
       </form>
       <table>
         <thead>
           <tr>
-            <th>Expense</th>
-            <th>Amount</th>
             <th>Type</th>
-            <th>Created date</th>
+            <th>Amount</th>
+            <th>Description</th>
+            {/* <th>Created date</th> */}
           </tr>
         </thead>
         <tbody>
           {allExpenses.map((expense, index) => {
             return (
               <tr key={index}>
-                <td>{expense.name}</td>
-                <td>{expense.amount}</td>
                 <td>{expense.expenseType}</td>
-                <td>{expense.createdAt}</td>
-                <td>{expense._id}</td>
+                <td>{expense.amount}</td>
+                <td>{expense.description}</td>
+                {/* <td>{expense.createdAt}</td>
+                <td>{expense._id}</td> */}
                 <td>
                   <button
                     onClick={() => {
